@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+
+  solbot:
+    container_name: solbot
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: [ "python3", "app_bot.py" ]
+    ports:
+      - 8889:8889
+
+
+

@@ -1,0 +1,13 @@
+aiogram==3.10.0
+boto3
+tavily-python
+requests
+sqlalchemy
+aiomysql
+pytube
+youtube_dl
+starlette==0.36.2
+youtube-search-python
+openai
+redis
+shazamio
