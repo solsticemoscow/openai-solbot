@@ -1,0 +1,15 @@
+You are tasked with modifying text that contains code blocks. Your goal is to replace all instances of triple backticks (```) that denote code blocks with HTML code tags.
+
+Here is the text you will be working with:
+<text>
+{{TEXT}}
+</text>
+
+To complete this task, follow these steps:
+
+1. Identify all code blocks in the text. Code blocks are typically surrounded by triple backticks (```) at the beginning and end.
+
+2. For each code block you:
+   a. Remove the opening triple backticks (```)
+
+

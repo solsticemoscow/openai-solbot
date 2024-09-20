@@ -1,5 +1,5 @@
 import json
-from app_bot_ya import BOT, DP
+from app_service import BOT, DP
 
 
 async def get_update(event, context) -> dict:

@@ -7,7 +7,7 @@ import requests
 from openai import AsyncOpenAI
 
 from BOT.UTILS.m_utils import UtilsClass
-from BOT.config import MODEL_VOICE, PROMT2, OPENAI_API, VECTOR
+from BOT.config import MODEL_VOICE, PROMT2, OPENAI_API, VECTOR, ROOT_DIR, ASSISTANT_ID, THREAD_ID, VECTOR_STORE
 
 tools = [
     {
@@ -113,6 +113,7 @@ class ClassOAI:
 
         try:
             response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+            print(response.json())
 
             return response.json()['choices'][0]['message']['content']
         except Exception as e:
@@ -130,7 +131,9 @@ class ClassOAI:
         self.MSGS.clear()
 
     async def get_image(self, PROMT: str):
+        PROMT_DEF = 'Генерируй изображения только связанные с серий игр - Mortal Kombat.'
         try:
+            PROMT_DEF += '\n' + PROMT
             image = await self.llm.images.generate(
                 model="dall-e-3",
                 response_format='url',
@@ -155,6 +158,15 @@ class ClassOAI:
 
     async def get_text(self, MSGS: list):
         try:
+
+            # with open(ROOT_DIR + '\\FILES\SYSTEM.txt', 'r') as file:
+            #     PROMT = file.read()
+            #
+            # PROMT = 'If in your answer have triple backticks - then delete them.'
+            await self.add_dialog(
+                content='Bot.',
+                role='system')
+
             response = await self.llm.chat.completions.create(
                 model="gpt-3.5-turbo-0125",
                 messages=MSGS,
@@ -178,13 +190,37 @@ class ClassOAI:
         except Exception as e:
             return e
 
+    async def work_with_assistant(self, query: str):
+        try:
+
+
+            thread = await self.llm.beta.threads.create()
+
+            await self.llm.beta.threads.messages.create(
+                thread_id=thread.id,
+                role="user",
+                content=query,
+            )
+
+            run = await self.llm.beta.threads.runs.create_and_poll(
+                thread_id=thread.id,
+                assistant_id=ASSISTANT_ID
+            )
+
+            if run.status == "completed":
+                messages = await self.llm.beta.threads.messages.list(thread_id=thread.id)
+                print(messages)
+
+            for message in messages:
+                print(message[1][0])
+
+
+
+
+        except Exception as e:
+            return e
+
 
 ClassOpenAI = ClassOAI()
 
-# async def f1():
-#     MSGS = await ClassOpenAI.add_dialog(content='radeon rx 570 год выпуска', role='user')
-#     print(MSGS)
-#
-#     return await ClassOpenAI.get_text(MSGS=MSGS)
-#
-# print(asyncio.run(f1()))
+

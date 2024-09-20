@@ -1,8 +1,6 @@
 from aiogram.fsm.state import StatesGroup, State
 
 
-class FSMSTATES(StatesGroup):
-    IMAGEGENERATE = State()
 
 
 
@@ -16,18 +14,16 @@ from aiogram.types import (
 )
 
 from aiogram.utils.markdown import link, hbold, hblockquote, hitalic, hcode
-
-
 from BOT.UTILS.m_openai import ClassOpenAI
-
 from BOT.config import ROOT_DIR, MSG_SOLBOT, PHOTO
 
 router = Router()
 
+class FSMSTATES(StatesGroup):
+    IMAGEGENERATE = State()
+
 @router.message(FSMSTATES.IMAGEGENERATE, F.chat.type == 'private')
 async def do_image(message: Message, bot: Bot, state: FSMContext):
-
-    await state.clear()
     FROM: int = message.from_user.id
     TEXT = message.text
 
@@ -54,3 +50,4 @@ async def do_image(message: Message, bot: Bot, state: FSMContext):
         )
 
 
+    await state.clear()

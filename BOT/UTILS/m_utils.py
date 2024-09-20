@@ -2,11 +2,7 @@ from typing import Union
 
 
 import pytube
-
-
 from tavily import TavilyClient
-
-from youtubesearchpython import VideosSearch
 
 from BOT.config import ROOT_DIR, TAVILY_API
 
@@ -72,21 +68,28 @@ class ClassUtils:
         )
         return response
 
-    def get_content_from_youtube(self, URL: str, TYPE: str):
+    def get_content_from_youtube(self, URL: str, TYPE: str = 'yt_mp3'):
         try:
             YT = pytube.YouTube(url=URL)
 
             TRACK = YT.author + ' - ' + YT.title
-            OUTPATH = '/tmp/' + TRACK
+            DURATION = YT.length
 
-            if int(YT.length) < 600:
+
+
+            if int(DURATION) < 600:
                 if TYPE == 'yt_mp3':
-                    YT.streams.get_audio_only().download(filename=TRACK + '.mp3', output_path='/tmp/')
-                    return int(YT.length), OUTPATH + '.mp3'
+                    OUTPATH = ROOT_DIR + '/FILES/' + TRACK + '.mp3'
+                    print(OUTPATH)
+                    YT.streams.get_audio_only().download(filename=TRACK + '.mp3', output_path=OUTPATH)
+                    return int(YT.length), OUTPATH
                 if TYPE == 'yt_mp4':
+                    OUTPATH = ROOT_DIR + '/FILES/' + TRACK + '.mp4'
                     YT.streams.get_highest_resolution().download(
-                        filename=TRACK + '.mp4', output_path='/tmp/')
-                    return int(YT.length), OUTPATH + '.mp4'
+                        filename=TRACK + '.mp4', output_path=OUTPATH)
+                    return int(YT.length), OUTPATH
+            else:
+                return 'Video too long.'
         except Exception as e:
             return e
 
@@ -101,3 +104,5 @@ class ClassUtils:
 
 
 UtilsClass = ClassUtils()
+
+

@@ -23,3 +23,4 @@ RUN pip3 install --no-cache-dir --upgrade --default-timeout=10 -r /code/requirem
 COPY ./BOT /code/BOT
 COPY ./app_bot.py /code/app_bot.py
 
+CMD [ "python", "./app_bot.py"]

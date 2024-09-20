@@ -31,7 +31,10 @@ async def solbot():
 
     print('Bot start!')
 
-
+    await BOT.set_chat_menu_button(
+        chat_id=TG_SOLSTICE,
+        menu_button=MenuButtonWebApp(text="🔎 ПОИСК", web_app=WebAppInfo(url=f"{WEBAPPURL}/"))
+    )
 
     await BOT.set_my_commands([
         BotCommand(command='start', description='Start menu'),
