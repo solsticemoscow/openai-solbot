@@ -33,13 +33,6 @@ async def solbot():
 
 
 
-    await BOT.set_my_commands([
-        BotCommand(command='start', description='Start menu'),
-        BotCommand(command='get_image', description='Сгенерировать картинку'),
-    ],
-        scope=BotCommandScopeDefault()
-    )
-
 
     await BOT.send_message(
         chat_id=TG_SOLSTICE,

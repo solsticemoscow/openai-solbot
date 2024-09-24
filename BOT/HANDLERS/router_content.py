@@ -83,10 +83,9 @@ async def do_voice(message: Message, bot: Bot, state: FSMContext):
     os.remove(FILEPATH)
 
 
-@router.message(F.audio, F.chat.type == 'private')
+@router.message(F.audio)
 async def do_audio(message: Message, bot: Bot, state: FSMContext):
 
-    print(message.audio)
 
     FROM: int = message.from_user.id
     PHOTO_ID: str = message.audio.file_id
@@ -107,8 +106,6 @@ async def do_audio(message: Message, bot: Bot, state: FSMContext):
         'vision': True,
         'image_url': FILEPATH
     })
-
-
 
     os.remove(FILEPATH)
 

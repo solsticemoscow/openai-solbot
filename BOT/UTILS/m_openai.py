@@ -137,8 +137,9 @@ class ClassOAI:
             image = await self.llm.images.generate(
                 model="dall-e-3",
                 response_format='url',
+                size="256x256",
                 n=1,
-                quality='hd',
+                quality='standard',
                 prompt=PROMT
             )
             if image.data[0].url:
@@ -222,5 +223,6 @@ class ClassOAI:
 
 
 ClassOpenAI = ClassOAI()
+
 
 

@@ -56,10 +56,10 @@ async def command_start(message: Message, bot: Bot, state: FSMContext):
 
 
 @throttled(rate=60)
-@ROUTER.message(Command(commands=["image"]), F.chat.type == 'private')
+@ROUTER.message(Command(commands=["get_image"]))
 async def command_generate_image(message: Message, bot: Bot, state: FSMContext):
-    await bot.delete_message(message.from_user.id, message.message_id)
-    await message.answer(text=hbold(MSG_SOLBOT) + hitalic('Какое изображение вам нужно?'))
+    await bot.send_message(chat_id=message.from_user.id, text=hbold(MSG_SOLBOT) + hitalic('Какое изображение вам нужно?')
+                           )
 
     await state.set_state(FSMSTATES.IMAGEGENERATE)
 
