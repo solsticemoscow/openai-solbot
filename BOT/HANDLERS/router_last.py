@@ -121,38 +121,6 @@ async def callback_query_handler(call: CallbackQuery, bot: Bot, callback_data: M
 
 
 
-@router.message(F.chat.type == 'supergroup', F.contains('/image'))
-async def handle_group_message(message: Message, bot: Bot, db: AsyncSession = async_session()):
-    TEXT = message.text
-
-    await bot.delete_message(chat_id=message.from_user.id, message_id=message.message_id)
-    await bot.send_message(chat_id=message.from_user.id,
-                           text='🖌️ ' + hbold(message.from_user.username) + ':\n\n' + hcode(TEXT))
-
-    data = await state.get_data()
-
-    if data:
-        if data['vision']:
-            response = await ClassOpenAI.get_vision(image_path=data['image_url'])
-
-            await bot.send_message(
-                chat_id=message.from_user.id,
-                text=hbold(MSG_SOLBOT) + hcode(response),
-            )
-
-    else:
-        await ClassOpenAI.add_dialog(content=TEXT, role='user')
-
-        response = await ClassOpenAI.get_text(MSGS=ClassOpenAI.MSGS)
-
-        await ClassOpenAI.add_dialog(content=response, role='assistant')
-
-        await bot.send_message(
-            chat_id=message.from_user.id,
-            text=hbold(MSG_SOLBOT) + hcode(response),
-        )
-
-
 
 
 @router.message(F.text, F.chat.type == 'private')

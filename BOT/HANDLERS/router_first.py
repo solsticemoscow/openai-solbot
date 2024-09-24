@@ -55,7 +55,6 @@ async def command_start(message: Message, bot: Bot, state: FSMContext):
         await state.clear()
 
 
-@throttled(rate=60)
 @ROUTER.message(Command(commands=["get_image"]))
 async def command_generate_image(message: Message, bot: Bot, state: FSMContext):
     await bot.send_message(chat_id=message.from_user.id, text=hbold(MSG_SOLBOT) + hitalic('Какое изображение вам нужно?')
